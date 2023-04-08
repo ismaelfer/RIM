@@ -1,0 +1,66 @@
+
+def buscar(imagen):
+
+    # leer la imagen y calcular su descriptor HOG:
+    img = cv2.imread(imagen)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img = cv2.resize(img, (64, 128))
+    hog = cv2.HOGDescriptor()
+    descriptor = hog.compute(img)
+
+    # comparar el descriptor de la imagen con los descriptores de la base de datos:
+    distancias = []
+    for i in range(len(index_R)):
+        d = np.linalg.norm(descriptor - np.array(index_R[list(index_R.keys())[i]]))
+        distancias.append(d)
+
+    # encontrar la imagen mas parecida:
+    minimo = min(distancias)
+    indice = distancias.index(minimo)
+    print('La imagen mas parecida es:')
+    print(list(index_R.keys())[indice])
+    print('Distancia:', minimo)
+
+    # mostrar la imagen mas parecida:
+    img = cv2.imread('datos_R/' + list(index_R.keys())[indice])
+    cv2.imshow('imagen', img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+buscar('dataset_tarea1/dataset_a/q/q0001.jpg')
+
+
+
+----------------------------------------------------------------------
+
+    # ordenar las distancias y mostrar las 5 imagenes mas cercanas:
+    distancias = np.array(distancias)
+    indices = np.argsort(distancias)
+    for i in range(5):
+        print(distancias[indices[i]])
+        print(list(index_R.keys())[indices[i]])
+        img = cv2.imread('dataset_tarea1/dataset_a/' + list(index_R.keys())[indices[i]])
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        cv2.imshow('imagen', img)
+        cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
+
+-------------------------
+
+distancias = buscar(imagen_query)
+#obtener index de la imagen mas cercana:
+index = np.argmin(distancias)
+
+#obtener el nombre de la imagen mas cercana:
+imagen_cercana = list(index_R.keys())[index]
+print(imagen_cercana)
+
+#plotear la imagen mas cercana:
+img = cv2.imread(imagen_cercana)
+img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+plt.imshow(img)
+plt.show()
+
+
