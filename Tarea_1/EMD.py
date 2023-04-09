@@ -10,9 +10,6 @@ def compute_cumulative_histogram(hist):
 def earth_mover_distance(hist1, hist2):
     cdf1 = compute_cumulative_histogram(hist1)
     cdf2 = compute_cumulative_histogram(hist2)
-    #print cdf1 and cdf2 to a file:
-    np.savetxt('out/cdf1.txt', cdf1, fmt='%1.4e')
-    np.savetxt('out/cdf2.txt', cdf2, fmt='%1.4e')
     return np.sum(np.abs(cdf1 - cdf2))
 
 def compare_images(image_path1, image_path2, num_bins=256):
